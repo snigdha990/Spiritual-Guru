@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 interface Progress {
   streak: number;
   totalMinutes: number;
+  completedTasks: boolean[];
+  lastCompletedDate?: string; 
 }
 
 export default function HomePageClient() {
@@ -23,24 +25,81 @@ export default function HomePageClient() {
   ];
 
   const todaySadhana = [
-    "5-min mindful breathing",
-    "Chant Om 21 times",
-    "Gratitude reflection",
+    { task: "5-min mindful breathing", minutes: 5 },
+    { task: "Chant Om 21 times", minutes: 10 },
+    { task: "Gratitude reflection", minutes: 5 },
   ];
 
-  const [progress, setProgress] = useState<Progress>({ streak: 0, totalMinutes: 0 });
+  const [progress, setProgress] = useState<Progress>({
+    streak: 0,
+    totalMinutes: 0,
+    completedTasks: todaySadhana.map(() => false),
+    lastCompletedDate: undefined,
+  });
 
+  // Helper to get today's date as YYYY-MM-DD
+  const getToday = () => new Date().toISOString().split("T")[0];
+
+  // Load progress from localStorage
   useEffect(() => {
-    const savedProgress = localStorage.getItem(`progress_${guru}_${language}`);
-    if (savedProgress) {
-      setProgress(JSON.parse(savedProgress));
+    const saved = localStorage.getItem(`progress_${guru}_${language}`);
+    const today = getToday();
+
+    if (saved) {
+      const parsed: Progress = JSON.parse(saved);
+
+      // Reset daily tasks if lastCompletedDate is not today
+      if (parsed.lastCompletedDate !== today) {
+        parsed.completedTasks = todaySadhana.map(() => false);
+        parsed.lastCompletedDate = today;
+      }
+
+      // Ensure completedTasks matches today's sadhana length
+      if (!parsed.completedTasks || parsed.completedTasks.length !== todaySadhana.length) {
+        parsed.completedTasks = todaySadhana.map(() => false);
+      }
+
+      setProgress(parsed);
+      localStorage.setItem(`progress_${guru}_${language}`, JSON.stringify(parsed));
     } else {
-      localStorage.setItem(
-        `progress_${guru}_${language}`,
-        JSON.stringify({ streak: 0, totalMinutes: 0 })
-      );
+      const initial: Progress = {
+        streak: 0,
+        totalMinutes: 0,
+        completedTasks: todaySadhana.map(() => false),
+        lastCompletedDate: today,
+      };
+      setProgress(initial);
+      localStorage.setItem(`progress_${guru}_${language}`, JSON.stringify(initial));
     }
   }, [guru, language]);
+
+  // Toggle task completion
+  const handleTaskToggle = (index: number) => {
+    const updatedTasks = [...progress.completedTasks];
+    updatedTasks[index] = !updatedTasks[index];
+
+    const minutesCompleted = todaySadhana.reduce((acc, item, i) => {
+      return acc + (updatedTasks[i] ? item.minutes : 0);
+    }, 0);
+
+    let updatedStreak = progress.streak;
+
+    // If all tasks are completed today, increment streak
+    if (updatedTasks.every(Boolean) && !progress.completedTasks.every(Boolean)) {
+      updatedStreak += 1;
+    }
+
+    const updatedProgress: Progress = {
+      ...progress,
+      totalMinutes: minutesCompleted,
+      completedTasks: updatedTasks,
+      streak: updatedStreak,
+      lastCompletedDate: getToday(),
+    };
+
+    setProgress(updatedProgress);
+    localStorage.setItem(`progress_${guru}_${language}`, JSON.stringify(updatedProgress));
+  };
 
   return (
     <div className="min-h-screen text-white px-4 sm:px-6 md:px-8 py-6 bg-gradient-to-tr from-purple-900 via-black to-indigo-900">
@@ -70,13 +129,22 @@ export default function HomePageClient() {
       <section className="mb-8">
         <h2 className="text-lg sm:text-xl font-semibold mb-3">Today's Sadhana</h2>
         <div className="space-y-2 sm:space-y-3">
-          {todaySadhana.map((task, i) => (
+          {todaySadhana.map((item, i) => (
             <div
               key={i}
-              className="p-3 sm:p-4 bg-white/10 rounded-xl border border-gray-600 flex items-center justify-between"
+              className={`p-3 sm:p-4 rounded-xl border flex items-center justify-between cursor-pointer
+                          ${progress.completedTasks[i] ? 'bg-green-500/20 border-green-400' : 'bg-white/10 border-gray-600'}`}
+              onClick={() => handleTaskToggle(i)}
             >
-              <p className="text-sm sm:text-base">{task}</p>
-              <input type="checkbox" className="w-4 h-4 sm:w-5 sm:h-5" />
+              <p className={`text-sm sm:text-base ${progress.completedTasks[i] ? 'line-through text-gray-400' : ''}`}>
+                {item.task}
+              </p>
+              <input
+                type="checkbox"
+                checked={progress.completedTasks[i]}
+                onChange={() => handleTaskToggle(i)}
+                className="w-4 h-4 sm:w-5 sm:h-5"
+              />
             </div>
           ))}
         </div>
