@@ -19,7 +19,7 @@ export default function ChatPage() {
 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [typingText, setTypingText] = useState(''); 
+  const [typingText, setTypingText] = useState('');
 
   const hardcodedResponses = [
     "Peace comes from within. Reflect deeply.",
@@ -29,18 +29,17 @@ export default function ChatPage() {
   ];
 
   const sendMessage = () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim()) return;
 
     const question = input;
     setMessages((prev) => [...prev, { sender: 'user', text: question }]);
     setInput('');
     setLoading(true);
+
+    let charIndex = 0;
+    const response = hardcodedResponses[Math.floor(Math.random() * hardcodedResponses.length)];
     setTypingText('');
 
-    const response = hardcodedResponses[Math.floor(Math.random() * hardcodedResponses.length)];
-    let charIndex = 0;
-
-    // Typing effect
     const typingInterval = setInterval(() => {
       if (charIndex < response.length) {
         setTypingText((prev) => prev + response.charAt(charIndex));
@@ -51,7 +50,7 @@ export default function ChatPage() {
         setTypingText('');
         setLoading(false);
       }
-    }, 40); // adjust typing speed
+    }, 50);
   };
 
   return (
