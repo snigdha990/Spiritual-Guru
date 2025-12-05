@@ -1,5 +1,4 @@
-
-'use client';
+'use client'; 
 
 import { useSearchParams } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
@@ -32,8 +31,7 @@ export default function HomePage() {
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    const question = input;
-    setMessages((prev) => [...prev, { sender: 'user', text: question }]);
+    setMessages((prev) => [...prev, { sender: 'user', text: input }]);
     setInput('');
     setLoading(true);
 
@@ -44,12 +42,12 @@ export default function HomePage() {
       ];
     setTypingText('');
 
-    const typingInterval = setInterval(() => {
+    const interval = setInterval(() => {
       if (charIndex < response.length) {
         setTypingText((prev) => prev + response.charAt(charIndex));
         charIndex++;
       } else {
-        clearInterval(typingInterval);
+        clearInterval(interval);
         setMessages((prev) => [...prev, { sender: 'guru', text: response }]);
         setTypingText('');
         setLoading(false);
@@ -78,12 +76,10 @@ export default function HomePage() {
 
       {/* Chat Area */}
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        {messages.map((msg, index) => (
+        {messages.map((msg, i) => (
           <div
-            key={index}
-            className={`flex ${
-              msg.sender === 'user' ? 'justify-end' : 'justify-start'
-            }`}
+            key={i}
+            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
               className={`max-w-xs px-4 py-3 rounded-xl shadow-lg text-sm ${
