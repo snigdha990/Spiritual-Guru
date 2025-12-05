@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Message {
   sender: 'user' | 'guru';
@@ -16,10 +16,10 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     { sender: 'guru', text: `Welcome, my child. How may I guide you today?` }
   ]);
-
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [typingText, setTypingText] = useState('');
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   const hardcodedResponses = [
     "Peace comes from within. Reflect deeply.",
@@ -53,9 +53,12 @@ export default function ChatPage() {
     }, 50);
   };
 
-  return (
-    <div className="flex flex-col min-h-screen">
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, typingText]);
 
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-5 pb-4 border-b border-gray-700 bg-cardDark/40 backdrop-blur-md">
         <img
@@ -73,19 +76,16 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-xs px-4 py-3 rounded-xl shadow-lg text-sm 
-                ${msg.sender === 'user'
-                  ? 'bg-yellow-400 text-black rounded-br-none'
-                  : 'bg-white/10 border border-yellow-300 text-yellow-200 rounded-bl-none'
-                }`}
-            >
+            <div className={`max-w-xs px-4 py-3 rounded-xl shadow-lg text-sm
+              ${msg.sender === 'user'
+                ? 'bg-yellow-400 text-black rounded-br-none'
+                : 'bg-white/10 border border-yellow-300 text-yellow-200 rounded-bl-none'
+              }`}>
               {msg.text}
             </div>
           </div>
         ))}
 
-        {/* Typing animation */}
         {loading && (
           <div className="flex justify-start">
             <div className="max-w-xs px-4 py-3 rounded-xl shadow-lg bg-white/10 border border-yellow-300 text-yellow-200 text-sm flex gap-1">
@@ -95,7 +95,6 @@ export default function ChatPage() {
           </div>
         )}
 
-        {/* Real-time typing text */}
         {typingText && (
           <div className="flex justify-start">
             <div className="max-w-xs px-4 py-3 rounded-xl shadow-lg bg-white/10 border border-yellow-300 text-yellow-200 text-sm">
@@ -104,6 +103,8 @@ export default function ChatPage() {
             </div>
           </div>
         )}
+
+        <div ref={chatEndRef} />
       </div>
 
       {/* Input */}
@@ -113,8 +114,7 @@ export default function ChatPage() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
           placeholder="Ask your question..."
-          className="flex-1 px-4 py-3 rounded-xl bg-white/10 text-gray-200 border border-gray-600 
-                     focus:border-yellow-300 outline-none"
+          className="flex-1 px-4 py-3 rounded-xl bg-white/10 text-gray-200 border border-gray-600 focus:border-yellow-300 outline-none"
         />
         <button
           onClick={sendMessage}
