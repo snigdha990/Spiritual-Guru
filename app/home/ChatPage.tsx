@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Message {
   sender: 'user' | 'guru';
@@ -54,7 +54,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-purple-900 via-indigo-900 to-blue-900">
+    <div className="flex flex-col min-h-screen">
 
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-5 pb-4 border-b border-gray-700 bg-cardDark/40 backdrop-blur-md">
