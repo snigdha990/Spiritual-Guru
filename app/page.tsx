@@ -38,12 +38,11 @@ export default function AppPage() {
       />
 
       {/* Sai Baba Intro Section */}
-      <div className="w-full flex justify-center mt-12">
-        <SaiBabaIntro
-          selectedLanguage={selectedLanguage}
-          selectedGuru={selectedGuru}
-        />
-      </div>
+      <SaiBabaIntro
+        selectedLanguage={selectedLanguage ?? ''}
+        selectedGuru={selectedGuru}
+        onAskGuru={() => router.push(`/home?lang=${selectedLanguage}&guru=${selectedGuru}`)}
+      />
 
       {/* Features Section */}
       <FeatureCards features={features} />

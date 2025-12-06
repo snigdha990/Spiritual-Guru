@@ -1,34 +1,32 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 interface SaiBabaIntroProps {
   selectedLanguage?: string;
   selectedGuru?: string;
+  onAskGuru: () => void;
 }
 
 export default function SaiBabaIntro({
   selectedLanguage,
   selectedGuru,
+  onAskGuru,
 }: SaiBabaIntroProps) {
   const guruName = selectedGuru || 'Sai Baba';
-  const router = useRouter();
-
-  const handleAskGuru = () => {
-    // Navigate to /home with query params
-    const lang = selectedLanguage || 'English';
-    const guru = selectedGuru || 'Sai Baba';
-    router.push(`/home?lang=${encodeURIComponent(lang)}&guru=${encodeURIComponent(guru)}`);
-  };
 
   return (
     <section
-      style={{ animation: 'popUpDown 3s ease-in-out infinite', perspective: '500px' }}
+      style={{
+        animation: 'popUpDown 3s ease-in-out infinite',
+        perspective: '500px',
+      }}
       className="relative w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-0 mt-10 md:mt-12 px-8 py-12 rounded-3xl shadow-2xl border-2 border-yellow-400 overflow-hidden"
     >
       {/* Fixed Background Blob */}
       <div
-        style={{ animation: 'pulseGlow 4s ease-in-out infinite alternate', filter: 'blur(40px)' }}
+        style={{
+          animation: 'pulseGlow 4s ease-in-out infinite alternate',
+          filter: 'blur(40px)',
+        }}
         className="fixed top-[-120px] left-1/2 w-[420px] h-[420px] bg-yellow-400 opacity-20 rounded-full -translate-x-1/2 -z-10"
       />
 
@@ -49,11 +47,13 @@ export default function SaiBabaIntro({
         </h2>
 
         <p className="text-gray-200 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto md:mx-0">
-          Sai Baba is one of the most beloved spiritual masters, teaching peace, compassion, and unity beyond all religions.
+          Sai Baba is one of the most beloved spiritual masters, teaching peace,
+          compassion, and unity beyond all religions.
         </p>
 
         <p className="text-gray-200 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto md:mx-0">
-          Ask anything related to life, spirituality, meditation, or emotional challenges. Your AI Guru responds with compassion.
+          Ask anything related to life, spirituality, meditation, or emotional
+          challenges. Your AI Guru responds with compassion.
         </p>
 
         {selectedLanguage && (
@@ -63,7 +63,7 @@ export default function SaiBabaIntro({
         )}
 
         <button
-          onClick={handleAskGuru}
+          onClick={onAskGuru}
           style={{ animation: 'glowPulse 4s ease-in-out infinite alternate' }}
           className="mt-6 px-14 py-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold text-lg sm:text-xl shadow-lg hover:scale-110 hover:shadow-2xl transition-transform duration-300 relative overflow-hidden"
         >
@@ -87,16 +87,37 @@ export default function SaiBabaIntro({
       {/* Inline CSS Keyframes */}
       <style jsx>{`
         @keyframes popUpDown {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-10px) scale(1.02); }
+          0%,
+          100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-10px) scale(1.02);
+          }
         }
+
         @keyframes glowPulse {
-          0%, 100% { text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500; opacity: 0.7; }
-          50% { text-shadow: 0 0 25px #ffd700, 0 0 40px #ffa500; opacity: 1; }
+          0%,
+          100% {
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffa500;
+            opacity: 0.7;
+          }
+          50% {
+            text-shadow: 0 0 25px #ffd700, 0 0 40px #ffa500;
+            opacity: 1;
+          }
         }
+
         @keyframes pulseGlow {
-          0%, 100% { opacity: 0.15; filter: blur(35px); }
-          50% { opacity: 0.3; filter: blur(45px); }
+          0%,
+          100% {
+            opacity: 0.15;
+            filter: blur(35px);
+          }
+          50% {
+            opacity: 0.3;
+            filter: blur(45px);
+          }
         }
       `}</style>
     </section>
