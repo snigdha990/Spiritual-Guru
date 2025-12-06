@@ -1,6 +1,15 @@
 module.exports = {
   theme: {
     extend: {
+      colors: {
+        bgDark: '#151823',
+        cardDark: '#1A1C29',
+        goldPrimary: '#F5C542',
+        goldAccent: '#E3A857',
+        textPrimary: '#FFFFFF',
+        textSecondary: '#C7C9D1',
+        inputBorder: '#2C2F40',
+      },
       keyframes: {
         popUpDown: {
           '0%,100%': { transform: 'translateY(0px) scale(1)' },

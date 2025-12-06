@@ -19,8 +19,9 @@ export default function AskGuruSection() {
       </p>
       <button
         onClick={handleAskGuru}
-        className="px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-purple-500 to-cyan-400 text-black font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
-      >
+        style={{ animation: 'glowPulse 4s ease-in-out infinite alternate' }}
+        className="w-full sm:w-auto mt-4 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-black font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
+        >
         Ask Guru
       </button>
     </section>
