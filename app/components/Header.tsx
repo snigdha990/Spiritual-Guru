@@ -6,39 +6,56 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 export default function Header() {
   return (
     <header
-      className="w-full flex items-center justify-between
-                 px-4 sm:px-6 py-3 sm:py-4 mb-10
-                 bg-cardDark/70 backdrop-blur-md
-                 border-b border-gray-600 rounded-b-xl shadow-md"
+      className="
+        w-full sticky top-0 z-50
+        flex items-center justify-between
+        px-4 sm:px-8 py-4
+        backdrop-blur-xl bg-black/20 
+        border-b border-white/10
+        shadow-[0_8px_30px_rgba(0,0,0,0.25)]
+        animate-fade
+      "
     >
-      {/* LEFT — Logo + Title */}
-      <div className="flex items-center space-x-2 sm:space-x-3">
+      {/* LEFT — LOGO + TITLE */}
+      <div className="flex items-center gap-3">
+        {/* Animated Logo */}
         <img
-          src="/logo.png"
+          src="/logo.svg"
           alt="Logo"
-          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full animate-pulse-slow"
+          className="
+            w-10 h-10 sm:w-12 sm:h-12 
+            rounded-full border border-brand-gold/50 
+            shadow-glow
+            animate-float
+          "
         />
 
+        {/* Title */}
         <h1
-          className="text-xl sm:text-2xl md:text-3xl font-bold
-                     bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400
-                     bg-clip-text text-transparent animate-textGradient"
+          className="
+            text-xl sm:text-2xl md:text-3xl font-extrabold
+            bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-400
+            bg-clip-text text-transparent
+            drop-shadow-md animate-textGradient
+          "
         >
           AI Spiritual Guru
         </h1>
       </div>
 
-      {/* RIGHT — Auth Buttons */}
-      <div className="flex items-center space-x-3 sm:space-x-4">
+      {/* RIGHT — AUTH BUTTONS */}
+      <div className="flex items-center gap-4">
         <SignedOut>
           <SignInButton>
             <button
-              className="px-4 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-3
-                         bg-gold text-black rounded-full font-semibold text-sm sm:text-base md:text-lg
-                         hover:scale-105 hover:shadow-lg transition-transform duration-200
-                         relative before:absolute before:inset-0 before:rounded-full
-                         before:bg-gradient-to-r before:from-yellow-300 before:via-yellow-400 before:to-yellow-300
-                         before:opacity-50 before:blur-xl before:animate-pulse before:-z-10"
+              className="
+                px-5 py-2 sm:px-6 sm:py-2.5
+                rounded-full font-semibold text-black
+                bg-gradient-to-r from-yellow-300 to-yellow-500
+                shadow-lg shadow-yellow-400/30
+                hover:scale-105 active:scale-95
+                transition-all duration-300 
+              "
             >
               Sign In
             </button>
@@ -46,7 +63,14 @@ export default function Header() {
         </SignedOut>
 
         <SignedIn>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "shadow-glow hover:scale-105 transition-transform"
+              }
+            }}
+          />
         </SignedIn>
       </div>
     </header>

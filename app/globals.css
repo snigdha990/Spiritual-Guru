@@ -61,3 +61,134 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.8s ease forwards;
 }
+
+/* Shimmer text animation */
+@keyframes shimmer {
+  0% { background-position: -500px 0; }
+  100% { background-position: 500px 0; }
+}
+.animate-shimmer {
+  background-size: 1000px 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Floating blobs animations */
+@keyframes float1 { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-15px) translateX(10px); } }
+@keyframes float2 { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(20px) translateX(-15px); } }
+@keyframes float3 { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-10px) translateX(20px); } }
+.animate-float1 { animation: float1 6s ease-in-out infinite alternate; }
+.animate-float2 { animation: float2 8s ease-in-out infinite alternate; }
+.animate-float3 { animation: float3 10s ease-in-out infinite alternate; }
+
+/* Shimmer heading */
+.shimmer-text {
+  position: relative;
+  background-size: 200% auto;
+  animation: shimmerText 3s linear infinite;
+}
+
+@keyframes shimmerText {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Fade-up stagger animation for language cards */
+@keyframes fadeUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Slow pulse for blobs */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}
+
+/* Shimmer heading */
+.shimmer-text {
+  position: relative;
+  background-size: 200% auto;
+  animation: shimmerText 3s linear infinite;
+}
+
+@keyframes shimmerText {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Fade-up stagger animation */
+@keyframes fadeUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Slow pulse for blobs */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+}
+
+.animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+
+/* Text gradient slow animation */
+@keyframes textGradientSlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-textGradientSlow { 
+  background-size: 200% 200%; 
+  background-clip: text; 
+  text-fill-color: transparent; 
+  animation: textGradientSlow 5s ease infinite;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+}
+
+@keyframes textGradientSlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
+}
+
+.shimmer-heading {
+  background-size: 1000px 100%;
+  animation: shimmer 5s linear infinite;
+}

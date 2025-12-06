@@ -1,29 +1,26 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx}',      // Scan your app folder for classes
-    './components/**/*.{js,ts,jsx,tsx}', // Scan components folder as well
-  ],
   theme: {
     extend: {
-      colors: {
-        cardDark: '#3B3F6B',     // Dark bluish card background
-        gold: '#FFB74D',         // Gold highlight color
-        textLight: '#F1F1F1',    // Light text color for contrast
-      },
-      animation: {
-        'gradient-x': 'gradient-x 15s ease infinite',
-      },
       keyframes: {
-        'gradient-x': {
-          '0%, 100%': { 'background-position': '0% 50%' },
-          '50%': { 'background-position': '100% 50%' },
+        popUpDown: {
+          '0%,100%': { transform: 'translateY(0px) scale(1)' },
+          '50%': { transform: 'translateY(-10px) scale(1.02)' },
+        },
+        float: {
+          '0%,100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-15px)' },
+        },
+        glowPulse: {
+          '0%, 100%': { textShadow: '0 0 5px #FFD700, 0 0 10px #FFA500', opacity: '0.7' },
+          '50%': { textShadow: '0 0 20px #FFD700, 0 0 30px #FFA500', opacity: '1' },
         },
       },
-      backgroundImage: {
-        'gradient-to-r': 'linear-gradient(to right, #1e3a8a, #5b21b6, #1e40af)', // Indigo/purple gradient base
+      animation: {
+        popUpDown: 'popUpDown 3s ease-in-out infinite',
+        'float-slow': 'float 6s ease-in-out infinite',
+        glowPulse: 'glowPulse 2s ease-in-out infinite alternate',
+        'pulse-slow': 'pulse 6s ease-in-out infinite',
       },
     },
   },
-  plugins: [],
 };

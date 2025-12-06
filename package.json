@@ -11,6 +11,8 @@
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.13.23",
     "@clerk/nextjs": "^6.35.5",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.19",
     "next": "16.0.6",
     "react": "19.2.0",
     "react-dom": "19.2.0"
