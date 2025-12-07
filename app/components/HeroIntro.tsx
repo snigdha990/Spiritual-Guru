@@ -26,22 +26,22 @@ export default function HeroIntro() {
       top: Math.random() * 100,
       left: Math.random() * 100,
       size: 4 + Math.random() * 6,
-      duration: 6 + Math.random() * 6, // random duration
+      duration: 6 + Math.random() * 6,
       delay: Math.random() * 4,
       color: `hsl(${Math.random() * 360}, 80%, 70%)`,
-      xPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50), // random x path
-      yPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50), // random y path
+      xPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50),
+      yPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50),
     }));
 
     setParticles(generated);
   }, []);
 
-  if (!mounted) return null; // SSR safe
+  if (!mounted) return null;
 
   return (
     <section className="relative w-full h-screen flex flex-col justify-center items-center bg-gradient-to-b from-[#0a0a0a] to-[#1a1a2e] overflow-hidden px-6">
 
-      {/* Mystical floating blobs */}
+      {/* Floating blobs */}
       <div className="absolute top-10 left-1/4 w-80 h-80 bg-purple-600/20 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 right-1/3 w-112 h-112 bg-pink-500/15 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
 
