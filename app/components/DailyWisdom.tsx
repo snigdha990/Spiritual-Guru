@@ -22,33 +22,45 @@ type Particle = {
 export default function DailyWisdom() {
   const [index, setIndex] = useState(0);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [mounted, setMounted] = useState(false);
 
-  // Rotate quotes
+  useEffect(() => setMounted(true), []);
+
+  // Rotate quotes every 6 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % quotes.length);
-    }, 6000);
+    const interval = setInterval(() => setIndex((prev) => (prev + 1) % quotes.length), 6000);
     return () => clearInterval(interval);
   }, []);
 
-  // Generate particles once on mount
+  // Generate floating particles
   useEffect(() => {
+    if (!mounted) return;
     const generated: Particle[] = Array.from({ length: 25 }, () => ({
       id: crypto.randomUUID(),
       top: Math.random() * 100,
       left: Math.random() * 100,
-      size: 4 + Math.random() * 8,
-      duration: 10 + Math.random() * 10,
+      size: 3 + Math.random() * 6,
+      duration: 12 + Math.random() * 8,
       delay: Math.random() * 5,
     }));
     setParticles(generated);
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
     <section className="relative py-20 px-6 sm:px-12 bg-gradient-to-r from-purple-800 via-pink-800 to-indigo-800 text-center overflow-hidden">
-      <h2 className="text-3xl sm:text-4xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 animate-textGlow">
+
+      {/* Section Heading */}
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl sm:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300"
+      >
         Daily Wisdom
-      </h2>
+      </motion.h2>
 
       {/* Floating particles */}
       {particles.map((p) => (
@@ -60,18 +72,15 @@ export default function DailyWisdom() {
             left: `${p.left}%`,
             width: `${p.size}px`,
             height: `${p.size}px`,
-            background: `rgba(255,255,255,${0.05 + Math.random() * 0.1})`,
+            backgroundColor: 'rgba(255,255,255,0.08)',
             filter: 'blur(3px)',
-            animationName: 'floatParticle',
-            animationDuration: `${p.duration}s`,
-            animationTimingFunction: 'linear',
-            animationIterationCount: 'infinite',
+            animation: `floatParticle ${p.duration}s ease-in-out infinite`,
             animationDelay: `${p.delay}s`,
           }}
         />
       ))}
 
-      {/* Quotes */}
+      {/* Rotating Quotes */}
       <AnimatePresence mode="wait">
         <motion.p
           key={index}
@@ -85,12 +94,12 @@ export default function DailyWisdom() {
         </motion.p>
       </AnimatePresence>
 
-      {/* Particle animation */}
+      {/* Particle Keyframes */}
       <style jsx>{`
         @keyframes floatParticle {
-          0% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
-          50% { transform: translateY(-20px) translateX(10px); opacity: 1; }
-          100% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+          0% { transform: translateY(0px) translateX(0px); opacity: 0.3; }
+          50% { transform: translateY(-15px) translateX(5px); opacity: 0.6; }
+          100% { transform: translateY(0px) translateX(0px); opacity: 0.3; }
         }
       `}</style>
     </section>

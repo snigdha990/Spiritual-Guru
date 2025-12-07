@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 
 type Particle = {
@@ -8,38 +8,75 @@ type Particle = {
   top: number;
   left: number;
   size: number;
-  duration: number;
-  delay: number;
   color: string;
+  duration: number;
 };
 
 export default function SaiBabaIntro() {
   const router = useRouter();
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
 
+  // Scroll + visibility detection
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-150px' });
+
+  // Mouse reactive parallax
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const parallaxX = useSpring(mouseX, { stiffness: 40, damping: 20 });
+  const parallaxY = useSpring(mouseY, { stiffness: 40, damping: 20 });
+
+  // Tiny particles
   const [particles, setParticles] = useState<Particle[]>([]);
 
-  // Generate particles on client
   useEffect(() => {
-    const generated: Particle[] = Array.from({ length: 35 }, () => ({
+    const generated = Array.from({ length: 35 }, () => ({
       id: crypto.randomUUID(),
       top: Math.random() * 100,
       left: Math.random() * 100,
-      size: 4 + Math.random() * 8,
-      duration: 8 + Math.random() * 8,
-      delay: Math.random() * 5,
+      size: 3 + Math.random() * 6,
       color: `hsl(${Math.random() * 360}, 70%, 70%)`,
+      duration: 8 + Math.random() * 8,
     }));
     setParticles(generated);
   }, []);
 
+  const handleMouseMove = (e: any) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
   return (
     <section
       ref={ref}
-      className="relative py-20 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex justify-center items-center"
+      onMouseMove={handleMouseMove}
+      className="relative py-28 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex justify-center items-center"
     >
-      {/* Glowing animated particles */}
+      {/* Background gradient sweep */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent"
+        animate={{ x: ['-30%', '130%'] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+      />
+
+      {/* Light rays behind everything */}
+      <motion.div
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,235,150,0.18),transparent_70%)]"
+        style={{ x: parallaxX, y: parallaxY }}
+      />
+
+      {/* Rotating spiritual Indian mandala halo */}
+      <motion.img
+        src="/mandalas/indian-mandala.svg"
+        alt="Spiritual Mandala"
+        className="absolute w-[50rem] opacity-[0.07] pointer-events-none"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+        style={{ x: parallaxX, y: parallaxY }}
+      />
+
+      {/* Interactive particles */}
       {particles.map((p) => (
         <motion.span
           key={p.id}
@@ -52,87 +89,74 @@ export default function SaiBabaIntro() {
             background: p.color,
             filter: 'blur(8px)',
           }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={
-            isInView
-              ? {
-                  y: [-10, 10, -10],
-                  x: [-5, 5, -5],
-                  scale: [0.8, 1.2, 0.8],
-                  opacity: [0.5, 1, 0.5],
-                }
-              : {}
-          }
+          animate={{
+            x: [0, (Math.random() - 0.5) * 50, 0],
+            y: [0, (Math.random() - 0.5) * 50, 0],
+            opacity: [0.2, 0.8, 0.2],
+            scale: [0.7, 1.3, 0.7],
+          }}
           transition={{
             duration: p.duration,
             repeat: Infinity,
-            delay: p.delay,
             ease: 'easeInOut',
           }}
         />
       ))}
 
-      {/* Aura glow behind card */}
+      {/* Levitation content card */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        initial={{ opacity: 0, scale: 0.8, y: 80 }}
+        animate={
+          isInView
+            ? { opacity: 1, scale: 1, y: 0 }
+            : {}
+        }
         transition={{ duration: 1, ease: 'easeOut' }}
-        className="absolute inset-0 flex justify-center items-center"
+        whileHover={{ y: -10 }}
+        className="relative z-20 flex flex-col sm:flex-row items-center gap-10 bg-white/5 
+                   backdrop-blur-xl rounded-3xl p-12 shadow-2xl max-w-5xl 
+                   border border-white/10"
       >
-        <div className="w-80 h-80 sm:w-[32rem] sm:h-[32rem] rounded-full bg-gradient-to-r from-yellow-400/20 via-pink-400/10 to-purple-500/20 filter blur-3xl animate-blobSlow"></div>
-      </motion.div>
-
-      {/* Card content */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: 50 }}
-        animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="relative z-10 flex flex-col sm:flex-row items-center gap-8 bg-white/5 backdrop-blur-md rounded-3xl p-8 shadow-lg max-w-5xl"
-      >
-        {/* Image */}
-        <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl">
+        {/* Sai Baba image with breathing glow */}
+        <motion.div
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+          className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl"
+        >
           <img
             src="/gurus/saibaba.jpg"
             alt="Sai Baba"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-pulse-slow"></div>
-        </div>
 
-        {/* Text */}
+          {/* Outer glow ring */}
+          <motion.div
+            animate={{ opacity: [0.15, 0.35, 0.15], scale: [1, 1.1, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute inset-0 rounded-full border-2 border-yellow-300/40"
+          />
+        </motion.div>
+
+        {/* Text Content */}
         <div className="flex-1 text-center sm:text-left">
-          <h2 className="text-3xl sm:text-4xl font-bold text-yellow-300 mb-4">
-            Sai Baba - Your Guide
+          <h2 className="text-4xl font-bold text-yellow-300 mb-4 drop-shadow-lg">
+            Sai Baba — Your Guide
           </h2>
           <p className="text-gray-300 text-lg sm:text-xl mb-6">
-            Experience the serene guidance of Sai Baba. Embrace wisdom, compassion, and enlightenment through his timeless teachings. Let your spiritual journey begin here, surrounded by divine energy and mystical guidance.
+            Connect with the divine presence of Sai Baba.  
+            Experience serenity, clarity, and spiritual insight with his timeless wisdom.
           </p>
+
           <motion.button
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 font-semibold text-black hover:scale-105 transition-transform"
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 
+                       font-semibold text-black hover:scale-110 transition-transform shadow-lg"
             onClick={() => router.push('/home')}
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            whileTap={{ scale: 0.95 }}
           >
             Ask Guru
           </motion.button>
         </div>
       </motion.div>
-
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes blobSlow {
-          0%, 100% { transform: translate(0px,0px) scale(1); }
-          33% { transform: translate(15px,-10px) scale(1.05); }
-          66% { transform: translate(-10px,15px) scale(0.95); }
-        }
-        .animate-blobSlow { animation: blobSlow 12s ease-in-out infinite; }
-
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.15; transform: scale(1); }
-          50% { opacity: 0.3; transform: scale(1.05); }
-        }
-        .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
-      `}</style>
     </section>
   );
 }
