@@ -15,17 +15,14 @@ type Particle = {
 export default function SaiBabaIntro() {
   const router = useRouter();
 
-  // Scroll + visibility detection
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-150px' });
 
-  // Mouse reactive parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const parallaxX = useSpring(mouseX, { stiffness: 40, damping: 20 });
   const parallaxY = useSpring(mouseY, { stiffness: 40, damping: 20 });
 
-  // Tiny particles
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
@@ -60,13 +57,13 @@ export default function SaiBabaIntro() {
         transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
       />
 
-      {/* Light rays behind everything */}
+      {/* Light rays */}
       <motion.div
         className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,235,150,0.18),transparent_70%)]"
         style={{ x: parallaxX, y: parallaxY }}
       />
 
-      {/* Rotating spiritual Indian mandala halo */}
+      {/* Rotating mandala */}
       <motion.img
         src="/mandalas/indian-mandala.svg"
         alt="Spiritual Mandala"
@@ -76,7 +73,7 @@ export default function SaiBabaIntro() {
         style={{ x: parallaxX, y: parallaxY }}
       />
 
-      {/* Interactive particles */}
+      {/* Floating particles */}
       {particles.map((p) => (
         <motion.span
           key={p.id}
@@ -103,59 +100,73 @@ export default function SaiBabaIntro() {
         />
       ))}
 
-      {/* Levitation content card */}
+      {/* Levitating content card */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 80 }}
-        animate={
-          isInView
-            ? { opacity: 1, scale: 1, y: 0 }
-            : {}
-        }
+        animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
         transition={{ duration: 1, ease: 'easeOut' }}
-        whileHover={{ y: -10 }}
         className="relative z-20 flex flex-col sm:flex-row items-center gap-10 bg-white/5 
-                   backdrop-blur-xl rounded-3xl p-12 shadow-2xl max-w-5xl 
-                   border border-white/10"
+                   backdrop-blur-xl rounded-3xl p-12 shadow-2xl max-w-5xl border border-white/10"
       >
-        {/* Sai Baba image with breathing glow */}
+        {/* Wrap the entire card in a continuous floating animation */}
         <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl"
+          animate={{
+            y: [0, -10, 0], // gentle vertical float
+            scale: [1, 1.02, 1], // gentle pop
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="w-full flex flex-col sm:flex-row items-center gap-10"
         >
-          <img
-            src="/gurus/saibaba.jpg"
-            alt="Sai Baba"
-            className="w-full h-full object-cover"
-          />
-
-          {/* Outer glow ring */}
+          {/* Sai Baba image */}
           <motion.div
-            animate={{ opacity: [0.15, 0.35, 0.15], scale: [1, 1.1, 1] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute inset-0 rounded-full border-2 border-yellow-300/40"
-          />
-        </motion.div>
-
-        {/* Text Content */}
-        <div className="flex-1 text-center sm:text-left">
-          <h2 className="text-4xl font-bold text-yellow-300 mb-4 drop-shadow-lg">
-            Sai Baba — Your Guide
-          </h2>
-          <p className="text-gray-300 text-lg sm:text-xl mb-6">
-            Connect with the divine presence of Sai Baba.  
-            Experience serenity, clarity, and spiritual insight with his timeless wisdom.
-          </p>
-
-          <motion.button
-            className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 
-                       font-semibold text-black hover:scale-110 transition-transform shadow-lg"
-            onClick={() => router.push('/home')}
-            whileTap={{ scale: 0.95 }}
+            animate={{
+              scale: [1, 1.05, 1],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl"
           >
-            Ask Guru
-          </motion.button>
-        </div>
+            <img
+              src="/gurus/saibaba.jpg"
+              alt="Sai Baba"
+              className="w-full h-full object-cover"
+            />
+
+            {/* Outer glow */}
+            <motion.div
+              animate={{ opacity: [0.15, 0.35, 0.15], scale: [1, 1.1, 1] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute inset-0 rounded-full border-2 border-yellow-300/40"
+            />
+          </motion.div>
+
+          {/* Text Content */}
+          <div className="flex-1 text-center sm:text-left">
+            <h2 className="text-4xl font-bold text-yellow-300 mb-4 drop-shadow-lg">
+              Sai Baba — Your Guide
+            </h2>
+            <p className="text-gray-300 text-lg sm:text-xl mb-6">
+              Connect with the divine presence of Sai Baba.  
+              Experience serenity, clarity, and spiritual insight with his timeless wisdom.
+            </p>
+
+            <motion.button
+              className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 
+                         font-semibold text-black hover:scale-110 transition-transform shadow-lg"
+              onClick={() => router.push('/home')}
+              whileTap={{ scale: 0.95 }}
+            >
+              Ask Guru
+            </motion.button>
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );

@@ -10,10 +10,15 @@ const features = [
 ];
 
 type Particle = {
+  id: string;
   top: number;
   left: number;
   size: number;
+  duration: number;
   delay: number;
+  color: string;
+  xDirection: number;
+  yDirection: number;
 };
 
 export default function FeatureCards() {
@@ -23,12 +28,19 @@ export default function FeatureCards() {
   useEffect(() => {
     setMounted(true);
 
-    // Generate light floating particles
-    const generated: Particle[] = Array.from({ length: 20 }, () => ({
+    const colors = ['#FFEB3B', '#FF5722', '#E91E63', '#9C27B0', '#00BCD4'];
+    
+    // Generate dynamic diagonal particles
+    const generated: Particle[] = Array.from({ length: 40 }, () => ({
+      id: crypto.randomUUID(),
       top: Math.random() * 100,
       left: Math.random() * 100,
-      size: 3 + Math.random() * 3,
-      delay: Math.random() * 10,
+      size: 3 + Math.random() * 5,
+      duration: 4 + Math.random() * 6,
+      delay: Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      xDirection: Math.random() < 0.5 ? -1 : 1,
+      yDirection: Math.random() < 0.5 ? -1 : 1,
     }));
 
     setParticles(generated);
@@ -39,76 +51,74 @@ export default function FeatureCards() {
   return (
     <section className="relative w-full py-20 bg-[#0b0b15] text-white px-6 sm:px-12 overflow-hidden">
 
-      {/* TITLE */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.6 }}
         className="text-4xl md:text-5xl font-bold text-center mb-14 
                    bg-clip-text text-transparent bg-gradient-to-r
                    from-yellow-300 via-pink-300 to-purple-300"
       >
-         Features
+        Features
       </motion.h2>
 
-      {/* Ambient particles */}
-      {particles.map((p, i) => (
+      {/* Modern diagonal colored particles */}
+      {particles.map((p) => (
         <span
-          key={`particle-${i}`}
+          key={p.id}
           className="absolute rounded-full pointer-events-none"
           style={{
             top: `${p.top}%`,
             left: `${p.left}%`,
             width: `${p.size}px`,
             height: `${p.size}px`,
-            backgroundColor: 'rgba(255,255,255,0.08)',
-            filter: 'blur(3px)',
-            animation: `softFloat 14s ease-in-out infinite`,
+            backgroundColor: p.color,
+            filter: 'blur(2px)',
+            opacity: 0.7,
+            animation: `diagonalFloat ${p.duration}s linear infinite`,
             animationDelay: `${p.delay}s`,
-          }}
+            transform: `translate(0, 0)`,
+            '--xDir': p.xDirection,
+            '--yDir': p.yDirection,
+          } as any}
         />
       ))}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto relative z-10">
-
         {features.map((feat) => (
           <motion.div
-            key={feat.title} 
+            key={feat.title}
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              y: [0, -6, 0],
+              y: [0, -10, 0],
+              scale: [1, 1.03, 1],
+              rotate: [0, 1, 0],
               boxShadow: [
                 '0px 0px 0px rgba(255,255,255,0.03)',
-                '0px 8px 20px rgba(255,255,255,0.08)',
-                '0px 0px 0px rgba(255,255,255,0.03)'
+                '0px 12px 24px rgba(255,255,255,0.08)',
+                '0px 0px 0px rgba(255,255,255,0.03)',
               ],
             }}
             transition={{
-              duration: 6,
+              duration: 4,
               repeat: Infinity,
               ease: 'easeInOut',
             }}
             className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-7 text-center border border-white/6 overflow-hidden"
           >
-
-            {/* Soft glowing aura */}
             <motion.div
               className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/8 via-transparent to-white/0 blur-2xl"
-              animate={{ opacity: [0.15, 0.3, 0.15] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ opacity: [0.15, 0.35, 0.15] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             />
-
-            {/* Moving shimmer line */}
             <motion.div
-              className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/10 to-transparent"
+              className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
               animate={{ x: ['-100%', '100%'] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
             />
-
-            {/* Content */}
             <div className="relative z-10">
               <div className="text-4xl mb-3">{feat.icon}</div>
               <h3 className="font-semibold text-xl mb-2">{feat.title}</h3>
@@ -118,12 +128,17 @@ export default function FeatureCards() {
         ))}
       </div>
 
-      {/* Particle float keyframes */}
       <style jsx>{`
-        @keyframes softFloat {
-          0% { transform: translateY(0px); opacity: 0.2; }
-          50% { transform: translateY(-20px); opacity: 0.35; }
-          100% { transform: translateY(0px); opacity: 0.2; }
+        @keyframes diagonalFloat {
+          0% {
+            transform: translate(0px, 0px);
+          }
+          50% {
+            transform: translate(calc(20px * var(--xDir)), calc(20px * var(--yDir)));
+          }
+          100% {
+            transform: translate(0px, 0px);
+          }
         }
       `}</style>
     </section>
