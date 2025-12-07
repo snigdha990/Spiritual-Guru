@@ -1,98 +1,260 @@
+// 'use client';
+// import React, { useRef, useState, useEffect } from 'react';
+// import { motion, useInView } from 'framer-motion';
+// import { useRouter } from 'next/navigation';
+
+// type Particle = {
+//   top: number;
+//   left: number;
+//   size: number;
+//   duration: number;
+//   delay: number;
+//   color: string;
+// };
+
+// export default function SaiBabaIntro() {
+//   const router = useRouter();
+//   const ref = useRef(null);
+//   const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+//   const [particles, setParticles] = useState<Particle[]>([]);
+
+//   useEffect(() => {
+//     const generated: Particle[] = Array.from({ length: 35 }, () => ({
+//       top: Math.random() * 100,
+//       left: Math.random() * 100,
+//       size: 4 + Math.random() * 8,
+//       duration: 8 + Math.random() * 8,
+//       delay: Math.random() * 5,
+//       color: `hsl(${Math.random() * 360}, 70%, 70%)`,
+//     }));
+//     setParticles(generated);
+//   }, []);
+
+//   return (
+//     <section
+//       ref={ref}
+//       className="relative py-20 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex justify-center items-center"
+//     >
+//       {/* Glowing animated particles */}
+//       {particles.map((p, i) => (
+//         <motion.span
+//           key={i}
+//           className="absolute rounded-full pointer-events-none"
+//           style={{
+//             top: `${p.top}%`,
+//             left: `${p.left}%`,
+//             width: `${p.size}px`,
+//             height: `${p.size}px`,
+//             background: p.color,
+//             filter: 'blur(8px)',
+//           }}
+//           animate={{
+//             y: [-10, 10, -10],
+//             x: [-5, 5, -5],
+//             scale: [0.8, 1.2, 0.8],
+//             opacity: [0.5, 1, 0.5],
+//           }}
+//           transition={{
+//             duration: p.duration,
+//             repeat: Infinity,
+//             delay: p.delay,
+//             ease: 'easeInOut',
+//           }}
+//         />
+//       ))}
+
+//       {/* Aura glow behind card */}
+//       <div className="absolute inset-0 flex justify-center items-center">
+//         <div className="w-80 h-80 sm:w-[32rem] sm:h-[32rem] rounded-full bg-gradient-to-r from-yellow-400/20 via-pink-400/10 to-purple-500/20 filter blur-3xl animate-blobSlow"></div>
+//       </div>
+
+//       {/* Card content */}
+//       <motion.div
+//         initial={{ opacity: 0, scale: 0.8 }}
+//         animate={isInView ? { opacity: 1, scale: [1.05, 0.98, 1] } : {}}
+//         transition={{ duration: 0.8, ease: 'easeOut' }}
+//         className="relative z-10 flex flex-col sm:flex-row items-center gap-8 bg-white/5 backdrop-blur-md rounded-3xl p-8 shadow-lg max-w-5xl"
+//       >
+//         {/* Image */}
+//         <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl">
+//           <img
+//             src="/gurus/saibaba.jpg"
+//             alt="Sai Baba"
+//             className="w-full h-full object-cover"
+//           />
+//           <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-pulse-slow"></div>
+//         </div>
+
+//         {/* Text */}
+//         <div className="flex-1 text-center sm:text-left">
+//           <h2 className="text-3xl sm:text-4xl font-bold text-yellow-300 mb-4">
+//             Sai Baba - Your Guide
+//           </h2>
+//           <p className="text-gray-300 text-lg sm:text-xl mb-6">
+//             Experience the serene guidance of Sai Baba. Embrace wisdom, compassion, and enlightenment through his timeless teachings. Let your spiritual journey begin here, surrounded by divine energy and mystical guidance.
+//           </p>
+//           <motion.button
+//             className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 font-semibold text-black hover:scale-105 transition-transform"
+//             onClick={() => router.push('/home')}
+//             whileHover={{ scale: 1.1 }}
+//             transition={{ type: 'spring', stiffness: 300 }}
+//           >
+//             Ask Guru
+//           </motion.button>
+//         </div>
+//       </motion.div>
+
+//       {/* Animations */}
+//       <style jsx>{`
+//         @keyframes blobSlow {
+//           0%, 100% { transform: translate(0px,0px) scale(1); }
+//           33% { transform: translate(15px,-10px) scale(1.05); }
+//           66% { transform: translate(-10px,15px) scale(0.95); }
+//         }
+//         .animate-blobSlow { animation: blobSlow 12s ease-in-out infinite; }
+
+//         @keyframes pulse-slow {
+//           0%, 100% { opacity: 0.15; transform: scale(1); }
+//           50% { opacity: 0.3; transform: scale(1.05); }
+//         }
+//         .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+//       `}</style>
+//     </section>
+//   );
+// }
 'use client';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
-interface SaiBabaIntroProps {
-  selectedLanguage?: string;
-  selectedGuru?: string;
-  onAskGuru: () => void;
-}
+type Particle = {
+  id: string;
+  top: number;
+  left: number;
+  size: number;
+  duration: number;
+  delay: number;
+  color: string;
+};
 
-export default function SaiBabaIntro({
-  selectedLanguage,
-  selectedGuru,
-  onAskGuru,
-}: SaiBabaIntroProps) {
-  const guruName = selectedGuru || 'Sai Baba';
+export default function SaiBabaIntro() {
+  const router = useRouter();
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  const [particles, setParticles] = useState<Particle[]>([]);
+
+  // Generate particles on client
+  useEffect(() => {
+    const generated: Particle[] = Array.from({ length: 35 }, () => ({
+      id: crypto.randomUUID(),
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: 4 + Math.random() * 8,
+      duration: 8 + Math.random() * 8,
+      delay: Math.random() * 5,
+      color: `hsl(${Math.random() * 360}, 70%, 70%)`,
+    }));
+    setParticles(generated);
+  }, []);
 
   return (
     <section
-      style={{ animation: 'popUpDown 3s ease-in-out infinite', perspective: '500px' }}
-      className="relative w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0 mt-10 md:mt-12 px-6 sm:px-8 py-10 md:py-12 rounded-3xl shadow-2xl border-2 border-goldPrimary overflow-hidden bg-cardDark"
+      ref={ref}
+      className="relative py-20 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex justify-center items-center"
     >
-      {/* Gradient Floating Blobs */}
-      <div className="absolute -top-16 left-1/4 w-36 sm:w-52 h-36 sm:h-52 bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 opacity-20 rounded-full animate-pulse-slow blur-3xl -z-10"></div>
-      <div className="absolute bottom-[-40px] right-1/3 w-44 sm:w-60 h-44 sm:h-60 bg-gradient-to-br from-purple-400 via-pink-400 to-yellow-400 opacity-15 rounded-full animate-pulse-slow blur-3xl -z-10"></div>
-
-      {/* Left Text */}
-      <div className="w-full md:w-3/5 space-y-4 sm:space-y-6 md:space-y-8 text-center md:text-left z-10">
-        <p
-          style={{ animation: 'glowPulse 3s ease-in-out infinite alternate' }}
-          className="text-goldPrimary text-lg sm:text-xl md:text-2xl font-semibold"
-        >
-          Embrace wisdom, compassion, and peace.
-        </p>
-
-        <h2
-          style={{ animation: 'glowPulse 3s ease-in-out infinite alternate' }}
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-goldPrimary drop-shadow-lg leading-tight"
-        >
-          {guruName} — Your Guide
-        </h2>
-
-        <p className="text-textSecondary text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto md:mx-0">
-          Sai Baba is one of the most beloved spiritual masters, teaching peace,
-          compassion, and unity beyond all religions.
-        </p>
-
-        <p className="text-textSecondary text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto md:mx-0">
-          Ask anything related to life, spirituality, meditation, or emotional
-          challenges. Your AI Guru responds with compassion.
-        </p>
-
-        {selectedLanguage && (
-          <p className="text-goldPrimary font-semibold text-sm sm:text-md">
-            Language selected: {selectedLanguage}
-          </p>
-        )}
-
-        <button
-          onClick={onAskGuru}
-          style={{ animation: 'glowPulse 4s ease-in-out infinite alternate' }}
-          className="w-full sm:w-auto mt-4 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-black font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
-        >
-          Ask Guru
-        </button>
-      </div>
-
-      {/* Right Image */}
-      <div className="w-full md:w-2/5 flex justify-center z-10 mt-8 md:mt-0">
-        <img
-          src="/gurus/saibaba.jpg"
-          alt="Sai Baba spiritual portrait"
-          className="w-64 sm:w-72 md:w-96 max-w-full h-auto rounded-3xl shadow-2xl object-cover border-4 border-goldPrimary transition-transform duration-500 hover:scale-105 filter drop-shadow-lg"
-          onError={(e) => {
-            const img = e.target as HTMLImageElement;
-            img.src = '/placeholder-image.png';
+      {/* Glowing animated particles */}
+      {particles.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            background: p.color,
+            filter: 'blur(8px)',
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={
+            isInView
+              ? {
+                  y: [-10, 10, -10],
+                  x: [-5, 5, -5],
+                  scale: [0.8, 1.2, 0.8],
+                  opacity: [0.5, 1, 0.5],
+                }
+              : {}
+          }
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            delay: p.delay,
+            ease: 'easeInOut',
           }}
         />
-      </div>
+      ))}
 
-      {/* Keyframes */}
+      {/* Aura glow behind card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="absolute inset-0 flex justify-center items-center"
+      >
+        <div className="w-80 h-80 sm:w-[32rem] sm:h-[32rem] rounded-full bg-gradient-to-r from-yellow-400/20 via-pink-400/10 to-purple-500/20 filter blur-3xl animate-blobSlow"></div>
+      </motion.div>
+
+      {/* Card content */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+        animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="relative z-10 flex flex-col sm:flex-row items-center gap-8 bg-white/5 backdrop-blur-md rounded-3xl p-8 shadow-lg max-w-5xl"
+      >
+        {/* Image */}
+        <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl">
+          <img
+            src="/gurus/saibaba.jpg"
+            alt="Sai Baba"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 rounded-full border-2 border-yellow-400/40 animate-pulse-slow"></div>
+        </div>
+
+        {/* Text */}
+        <div className="flex-1 text-center sm:text-left">
+          <h2 className="text-3xl sm:text-4xl font-bold text-yellow-300 mb-4">
+            Sai Baba - Your Guide
+          </h2>
+          <p className="text-gray-300 text-lg sm:text-xl mb-6">
+            Experience the serene guidance of Sai Baba. Embrace wisdom, compassion, and enlightenment through his timeless teachings. Let your spiritual journey begin here, surrounded by divine energy and mystical guidance.
+          </p>
+          <motion.button
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 font-semibold text-black hover:scale-105 transition-transform"
+            onClick={() => router.push('/home')}
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            Ask Guru
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Animations */}
       <style jsx>{`
-        @keyframes popUpDown {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-10px) scale(1.02); }
+        @keyframes blobSlow {
+          0%, 100% { transform: translate(0px,0px) scale(1); }
+          33% { transform: translate(15px,-10px) scale(1.05); }
+          66% { transform: translate(-10px,15px) scale(0.95); }
         }
-        @keyframes glowPulse {
-          0%, 100% { text-shadow: 0 0 10px #F5C542, 0 0 20px #E3A857; opacity: 0.85; }
-          50% { text-shadow: 0 0 25px #F5C542, 0 0 40px #E3A857; opacity: 1; }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.15; filter: blur(35px); }
-          50% { opacity: 0.3; filter: blur(45px); }
-        }
+        .animate-blobSlow { animation: blobSlow 12s ease-in-out infinite; }
+
         @keyframes pulse-slow {
-          0%, 100% { transform: scale(0.95); opacity: 0.2; }
-          50% { transform: scale(1.05); opacity: 0.35; }
+          0%, 100% { opacity: 0.15; transform: scale(1); }
+          50% { opacity: 0.3; transform: scale(1.05); }
         }
         .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
       `}</style>

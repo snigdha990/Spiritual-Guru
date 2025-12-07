@@ -10,10 +10,10 @@ export default function Header() {
         w-full sticky top-0 z-50
         flex items-center justify-between
         px-4 sm:px-8 py-4
-        backdrop-blur-xl bg-black/20 
+        bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/50 to-[#1a1a2e]/80
+        backdrop-blur-xl
         border-b border-white/10
         shadow-[0_8px_30px_rgba(0,0,0,0.25)]
-        animate-fade
       "
     >
       {/* LEFT — LOGO + TITLE */}

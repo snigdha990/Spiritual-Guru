@@ -1,102 +1,108 @@
 'use client';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
-import React, { useState, useEffect } from 'react';
+type Particle = {
+  top: number;
+  left: number;
+  size: number;
+  duration: number;
+  delay: number;
+  color: string;
+  xPath: number[];
+  yPath: number[];
+};
 
-interface LanguageCardProps {
-  language: string;
-  selected: boolean;
-  onClick: () => void;
-  style?: React.CSSProperties; // allow inline styles for animation
-}
-
-function LanguageCard({ language, selected, onClick, style }: LanguageCardProps) {
-  return (
-    <div
-      onClick={onClick}
-      style={style}
-      className={`cursor-pointer py-3 px-5 rounded-xl border text-center font-medium
-        transition transform duration-300 ease-in-out text-sm sm:text-base
-        ${selected
-          ? 'border-purple-500 bg-purple-500/25 shadow-lg scale-105 animate-pulse'
-          : 'border-gray-600 bg-gray-800 hover:bg-gray-700 hover:-translate-y-1 hover:shadow-xl hover:border-purple-500'
-        }`}
-    >
-      {language}
-    </div>
-  );
-}
-
-interface HeroIntroProps {
-  selectedLanguage: string;
-  setSelectedLanguage: (language: string) => void;
-  languages: string[];
-}
-
-const introQuotes = [
-  "Awaken your inner wisdom.",
-  "Embrace compassion, find peace.",
-  "Seek guidance, live mindfully.",
-  "Connect with your spiritual self."
-];
-
-export default function HeroIntro({
-  selectedLanguage,
-  setSelectedLanguage,
-  languages
-}: HeroIntroProps) {
-  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+export default function HeroIntro() {
+  const router = useRouter();
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentQuoteIndex((prev) => (prev + 1) % introQuotes.length);
-    }, 5000);
-    return () => clearInterval(interval);
+    setMounted(true);
+
+    const generated: Particle[] = Array.from({ length: 30 }, () => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: 4 + Math.random() * 6,
+      duration: 6 + Math.random() * 6, // random duration
+      delay: Math.random() * 4,
+      color: `hsl(${Math.random() * 360}, 80%, 70%)`,
+      xPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50), // random x path
+      yPath: Array.from({ length: 5 }, () => (Math.random() - 0.5) * 50), // random y path
+    }));
+
+    setParticles(generated);
   }, []);
 
+  if (!mounted) return null; // SSR safe
+
   return (
-    <section className="relative text-center space-y-6 max-w-3xl mx-auto px-4 mt-12">
-      {/* Floating mystical blobs */}
-      <div className="absolute top-0 left-1/4 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-3xl animate-blob1"></div>
-      <div className="absolute bottom-0 right-1/3 w-56 h-56 bg-cyan-400 rounded-full opacity-15 blur-3xl animate-blob2"></div>
-      <div className="absolute top-1/3 right-1/4 w-36 h-36 bg-pink-400 rounded-full opacity-10 blur-3xl animate-blob3"></div>
+    <section className="relative w-full h-screen flex flex-col justify-center items-center bg-gradient-to-b from-[#0a0a0a] to-[#1a1a2e] overflow-hidden px-6">
 
-      {/* Hero Heading */}
-      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight
-               bg-gradient-to-r from-purple-500 via-cyan-400 to-pink-500
-               bg-clip-text text-transparent relative overflow-hidden shimmer-heading hover:glow-heading transition-all duration-300">
-        Awaken Your Inner Wisdom
-      </h1>
+      {/* Mystical floating blobs */}
+      <div className="absolute top-10 left-1/4 w-80 h-80 bg-purple-600/20 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-20 right-1/3 w-112 h-112 bg-pink-500/15 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
 
-      {/* Rotating Quote */}
-      <p className="text-base sm:text-lg md:text-xl font-semibold
-                    text-transparent bg-clip-text
-                    bg-gradient-to-r from-purple-400 via-cyan-300 to-pink-300
-                    transition-opacity duration-1000 ease-in-out animate-textGradientSlow
-                    px-2">
-        {introQuotes[currentQuoteIndex]}
-      </p>
+      {/* Glowing floating particles */}
+      {particles.map((p, i) => (
+        <motion.span
+          key={i}
+          className="absolute rounded-full pointer-events-none"
+          initial={{ scale: 0.8, opacity: 0.6 }}
+          animate={{
+            scale: [0.8, 1.2, 0.8],
+            opacity: [0.6, 1, 0.6],
+            x: p.xPath,
+            y: p.yPath,
+          }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            repeatType: 'mirror',
+            ease: 'easeInOut',
+            delay: p.delay,
+          }}
+          style={{
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            background: p.color,
+            filter: 'blur(8px)',
+          }}
+        />
+      ))}
 
-      {/* Language Selector */}
-      <div className="mt-8 z-10 relative flex flex-col items-center">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-200 mb-4 text-center">
-          Select Language
-        </h2>
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-5 max-w-md w-full">
-          {languages.map((lang, index) => (
-            <LanguageCard
-              key={lang}
-              language={lang}
-              selected={selectedLanguage === lang}
-              onClick={() => setSelectedLanguage(lang)}
-              style={{
-                animation: 'fadeUp 0.5s ease forwards',
-                animationDelay: `${index * 0.15}s`,
-                opacity: 0
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Hero Text */}
+      <motion.h1
+        className="text-5xl sm:text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 shimmer-gold text-center"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        Welcome to Your Spiritual Journey
+      </motion.h1>
+
+      <motion.p
+        className="mt-6 text-center text-lg sm:text-xl md:text-2xl text-gray-300 max-w-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
+        Connect with your inner self, ask questions, and receive instant wisdom from the AI Guru.
+      </motion.p>
+
+      <motion.button
+        onClick={() => router.push('/home')}
+        className="mt-10 px-8 py-4 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 font-semibold text-black hover:scale-105 transition-transform"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+      >
+        Start Your Journey
+      </motion.button>
     </section>
   );
 }
