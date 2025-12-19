@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 
 type Particle = {
   top: number;
@@ -15,7 +14,6 @@ type Particle = {
 };
 
 export default function HeroIntro() {
-  const router = useRouter();
   const [particles, setParticles] = useState<Particle[]>([]);
   const [backgroundDust, setBackgroundDust] = useState<Particle[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -37,12 +35,12 @@ export default function HeroIntro() {
 
     setParticles(generated);
 
-    // Background ultra-faint dust (fully visible immediately)
+    // Background ultra-faint dust
     const dust: Particle[] = Array.from({ length: 50 }, () => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
       size: 1 + Math.random() * 2,
-      duration: 20 + Math.random() * 20, // very slow movement
+      duration: 20 + Math.random() * 20,
       color: `hsla(200, 50%, 80%, 0.1)`,
       xPath: Array.from({ length: 4 }, () => (Math.random() - 0.5) * 20),
       yPath: Array.from({ length: 4 }, () => (Math.random() - 0.5) * 20),
@@ -50,10 +48,9 @@ export default function HeroIntro() {
     }));
 
     setBackgroundDust(dust);
-
   }, []);
 
-  if (!mounted) return null; // SSR safe
+  if (!mounted) return null;
 
   return (
     <section className="relative w-full h-screen flex flex-col justify-center items-center bg-gradient-to-b from-[#0a0a0a] to-[#1a1a2e] overflow-hidden px-6">
@@ -62,12 +59,12 @@ export default function HeroIntro() {
       <div className="absolute top-10 left-1/4 w-80 h-80 bg-purple-600/20 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 right-1/3 w-112 h-112 bg-pink-500/15 rounded-full animate-slowFloat blur-3xl pointer-events-none"></div>
 
-      {/* Background ultra-faint dust layer - fully visible immediately */}
+      {/* Background dust */}
       {backgroundDust.map((p, i) => (
         <motion.span
           key={`dust-${i}`}
           className="absolute rounded-full pointer-events-none"
-          initial={{ scale: 0.3, opacity: 0.1 }} // immediately visible
+          initial={{ scale: 0.3, opacity: 0.1 }}
           animate={{
             scale: [0.3, 0.5, 0.3],
             opacity: [0.1, 0.12, 0.1],
@@ -79,7 +76,7 @@ export default function HeroIntro() {
             repeat: Infinity,
             repeatType: 'mirror',
             ease: 'easeInOut',
-            delay: 0, // start immediately
+            delay: 0,
           }}
           style={{
             top: `${p.top}%`,
@@ -99,7 +96,7 @@ export default function HeroIntro() {
           <motion.span
             key={`${i}-trail-${j}`}
             className="absolute rounded-full pointer-events-none"
-            initial={{ scale: 0.4, opacity: 0.2 }} // fully visible
+            initial={{ scale: 0.4, opacity: 0.2 }}
             animate={{
               scale: [0.4, 1, 0.4],
               opacity: [0.2, 0.6, 0.2],
@@ -111,7 +108,7 @@ export default function HeroIntro() {
               repeat: Infinity,
               repeatType: 'mirror',
               ease: 'easeInOut',
-              delay: 0, // no delay, visible immediately
+              delay: 0,
             }}
             style={{
               top: `${p.top}%`,
@@ -145,7 +142,10 @@ export default function HeroIntro() {
       </motion.p>
 
       <motion.button
-        onClick={() => router.push('/home')}
+        onClick={() => {
+          const el = document.getElementById('choose-guru');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
         className="mt-10 px-8 py-4 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 font-semibold text-black hover:scale-105 transition-transform shadow-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

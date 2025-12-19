@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Header from './components/Header';
 import HeroIntro from './components/HeroIntro';
 import SaiBabaIntro from './components/SaiBabaIntro';
@@ -11,6 +11,12 @@ import FloatingParticles from './components/FloatingParticles';
 
 export default function Page() {
   const [selectedGuru, setSelectedGuru] = useState('Sai Baba');
+  const saiBabaRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to Sai Baba section
+  const scrollToSaiBaba = () => {
+    saiBabaRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <main className="relative overflow-hidden bg-gradient-to-b from-indigo-900 via-purple-900 to-black text-white min-h-screen">
@@ -22,7 +28,9 @@ export default function Page() {
       <HeroIntro />
 
       {/* Sai Baba Introduction */}
-      <SaiBabaIntro />
+      <div ref={saiBabaRef}>
+        <SaiBabaIntro />
+      </div>
 
       {/* Features */}
       <FeatureCards />
@@ -31,7 +39,7 @@ export default function Page() {
       <DailyWisdom />
 
       {/* Ask Guru Interactive Section */}
-      <AskGuruSection />
+      <AskGuruSection scrollToSaiBaba={scrollToSaiBaba} />
 
       {/* Footer */}
       <Footer />

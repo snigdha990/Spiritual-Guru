@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const features = [
+type Feature = {
+  title: string;
+  description: string;
+  icon: string;
+};
+
+const features: Feature[] = [
   { title: 'Instant Wisdom', description: 'Get spiritual guidance instantly from our AI Guru.', icon: '🕉️' },
   { title: 'Personalized Advice', description: 'Receive answers tailored to your journey and questions.', icon: '💫' },
-  { title: 'Multi-Language Support', description: 'Ask your questions in English or Hindi.', icon: '🌐' },
   { title: 'Mystical Experience', description: 'Immersive, magical interface with glowing animations.', icon: '✨' },
+  { title: 'Choose Your Guru', description: 'Connect with Sai Baba or Buddha as your spiritual guide.', icon: '☸️' },
 ];
 
 type Particle = {
@@ -27,10 +33,8 @@ export default function FeatureCards() {
 
   useEffect(() => {
     setMounted(true);
-
     const colors = ['#FFEB3B', '#FF5722', '#E91E63', '#9C27B0', '#00BCD4'];
-    
-    // Generate dynamic diagonal particles
+
     const generated: Particle[] = Array.from({ length: 40 }, () => ({
       id: crypto.randomUUID(),
       top: Math.random() * 100,
@@ -50,7 +54,6 @@ export default function FeatureCards() {
 
   return (
     <section className="relative w-full py-20 bg-[#0b0b15] text-white px-6 sm:px-12 overflow-hidden">
-
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +66,7 @@ export default function FeatureCards() {
         Features
       </motion.h2>
 
-      {/* Modern diagonal colored particles */}
+      {/* Diagonal floating particles */}
       {particles.map((p) => (
         <span
           key={p.id}
@@ -78,14 +81,13 @@ export default function FeatureCards() {
             opacity: 0.7,
             animation: `diagonalFloat ${p.duration}s linear infinite`,
             animationDelay: `${p.delay}s`,
-            transform: `translate(0, 0)`,
             '--xDir': p.xDirection,
             '--yDir': p.yDirection,
           } as any}
         />
       ))}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 max-w-6xl mx-auto relative z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 max-w-6xl mx-auto relative z-10">
         {features.map((feat) => (
           <motion.div
             key={feat.title}
@@ -120,27 +122,13 @@ export default function FeatureCards() {
               transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
             />
             <div className="relative z-10">
-              <div className="text-4xl mb-3">{feat.icon}</div>
+              <div className="text-5xl mb-3">{feat.icon}</div>
               <h3 className="font-semibold text-xl mb-2">{feat.title}</h3>
               <p className="text-gray-300 text-sm leading-relaxed">{feat.description}</p>
             </div>
           </motion.div>
         ))}
       </div>
-
-      <style jsx>{`
-        @keyframes diagonalFloat {
-          0% {
-            transform: translate(0px, 0px);
-          }
-          50% {
-            transform: translate(calc(20px * var(--xDir)), calc(20px * var(--yDir)));
-          }
-          100% {
-            transform: translate(0px, 0px);
-          }
-        }
-      `}</style>
     </section>
   );
 }

@@ -46,9 +46,10 @@ export default function SaiBabaIntro() {
 
   return (
     <section
+      id="choose-guru"
       ref={ref}
       onMouseMove={handleMouseMove}
-      className="relative py-28 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex justify-center items-center"
+      className="relative py-28 px-6 sm:px-12 bg-[#0b0b15] text-white overflow-hidden flex flex-col items-center"
     >
       {/* Background gradient sweep */}
       <motion.div
@@ -100,74 +101,107 @@ export default function SaiBabaIntro() {
         />
       ))}
 
-      {/* Levitating content card */}
+      {/* Section Heading */}
+      <motion.h5
+        className="text-5xl sm:text-6xl md:text-7xl font-bold text-center mb-16 
+                   bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        Choose Your Guru
+      </motion.h5>
+
+      {/* Levitating content cards */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 80 }}
         animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
         transition={{ duration: 1, ease: 'easeOut' }}
-        className="relative z-20 flex flex-col sm:flex-row items-center gap-10 bg-white/5 
-                   backdrop-blur-xl rounded-3xl p-12 shadow-2xl max-w-5xl border border-white/10"
+        className="relative z-20 flex flex-col sm:flex-row items-center gap-10"
       >
-        {/* Wrap the entire card in a continuous floating animation */}
-        <motion.div
-          animate={{
-            y: [0, -10, 0], // gentle vertical float
-            scale: [1, 1.02, 1], // gentle pop
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="w-full flex flex-col sm:flex-row items-center gap-10"
-        >
-          {/* Sai Baba image */}
-          <motion.div
-            animate={{
-              scale: [1, 1.05, 1],
-            }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-yellow-300 shadow-2xl"
-          >
-            <img
-              src="/gurus/saibaba.jpg"
-              alt="Sai Baba"
-              className="w-full h-full object-cover"
-            />
+        {/* Sai Baba Card */}
+        <GuruCard
+          name="Sai Baba"
+          description="Connect with the divine presence of Sai Baba. Experience serenity, clarity, and spiritual insight with his timeless wisdom."
+          imgSrc="/gurus/saibaba.jpg"
+          buttonText="Ask Guru"
+          buttonAction={() => router.push('/home?guru=saibaba')}
+          borderColor="yellow-300"
+        />
 
-            {/* Outer glow */}
-            <motion.div
-              animate={{ opacity: [0.15, 0.35, 0.15], scale: [1, 1.1, 1] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute inset-0 rounded-full border-2 border-yellow-300/40"
-            />
-          </motion.div>
-
-          {/* Text Content */}
-          <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-4xl font-bold text-yellow-300 mb-4 drop-shadow-lg">
-              Sai Baba — Your Guide
-            </h2>
-            <p className="text-gray-300 text-lg sm:text-xl mb-6">
-              Connect with the divine presence of Sai Baba.  
-              Experience serenity, clarity, and spiritual insight with his timeless wisdom.
-            </p>
-
-            <motion.button
-              className="px-8 py-3 rounded-xl bg-gradient-to-r from-yellow-300 to-pink-400 
-                         font-semibold text-black hover:scale-110 transition-transform shadow-lg"
-              onClick={() => router.push('/home')}
-              whileTap={{ scale: 0.95 }}
-            >
-              Ask Guru
-            </motion.button>
-          </div>
-        </motion.div>
+        {/* Buddha Card */}
+        <GuruCard
+          name="Buddha"
+          description="Connect with Buddha’s timeless wisdom and experience mindfulness, compassion, and inner enlightenment."
+          imgSrc="/gurus/buddha.jpg"
+          buttonText="Seek Wisdom"
+          buttonAction={() => router.push('/home?guru=buddha')}
+          borderColor="blue-300"
+        />
       </motion.div>
     </section>
   );
 }
+
+// Reusable GuruCard component
+type GuruCardProps = {
+  name: string;
+  description: string;
+  imgSrc: string;
+  buttonText: string;
+  buttonAction: () => void;
+  borderColor: string;
+};
+
+const GuruCard: React.FC<GuruCardProps> = ({
+  name,
+  description,
+  imgSrc,
+  buttonText,
+  buttonAction,
+  borderColor,
+}) => (
+  <motion.div
+    animate={{
+      y: [0, -10, 0],
+      scale: [1, 1.02, 1],
+    }}
+    transition={{
+      duration: 6,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    }}
+    className="w-full flex flex-col sm:flex-row items-center gap-10 bg-white/5 
+               backdrop-blur-xl rounded-3xl p-12 shadow-2xl max-w-xl border border-white/10"
+  >
+    {/* Guru Image */}
+    <motion.div
+      animate={{ scale: [1, 1.05, 1] }}
+      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      className={`relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-${borderColor} shadow-2xl`}
+    >
+      <img src={imgSrc} alt={name} className="w-full h-full object-cover" />
+      <motion.div
+        animate={{ opacity: [0.15, 0.35, 0.15], scale: [1, 1.1, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className={`absolute inset-0 rounded-full border-2 border-${borderColor}/40`}
+      />
+    </motion.div>
+
+    {/* Text Content */}
+    <div className="flex-1 text-center sm:text-left">
+      <h2 className={`text-4xl font-bold text-${borderColor} mb-4 drop-shadow-lg`}>
+        {name} — Your Guide
+      </h2>
+      <p className="text-gray-300 text-lg sm:text-xl mb-6">{description}</p>
+      <motion.button
+        className={`px-8 py-3 rounded-xl bg-gradient-to-r from-${borderColor} to-pink-400 
+                   font-semibold text-black hover:scale-110 transition-transform shadow-lg`}
+        onClick={buttonAction}
+        whileTap={{ scale: 0.95 }}
+      >
+        {buttonText}
+      </motion.button>
+    </div>
+  </motion.div>
+);

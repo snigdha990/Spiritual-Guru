@@ -267,3 +267,36 @@ body {
 .animate-slowFloat {
   animation: slowFloat infinite ease-in-out;
 }
+
+ @keyframes diagonalFloat {
+    0% {
+      transform: translate(0px, 0px);
+    }
+    50% {
+      transform: translate(calc(20px * var(--xDir)), calc(20px * var(--yDir)));
+    }
+    100% {
+      transform: translate(0px, 0px);
+    }
+}
+
+.animated-bg {
+    background: linear-gradient(135deg, #111322, #0e0f1a, #111322, #0e0f1a);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-25px) translateX(12px); }
+    100% { transform: translateY(0px) translateX(0px); }
+  }
+  @keyframes pulseOpacity {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.2; }
+}
