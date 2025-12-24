@@ -17,30 +17,35 @@ export default function Header() {
       "
     >
       {/* LEFT — LOGO + TITLE */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {/* Animated Logo */}
         <img
-          src="/logo.svg"
-          alt="Logo"
+          src="/mindsetu.svg"
+          alt="MindsetU Logo"
           className="
-            w-10 h-10 sm:w-12 sm:h-12 
+            w-16 h-16 sm:w-20 sm:h-20 
             rounded-full border border-brand-gold/50 
             shadow-glow
             animate-float
           "
         />
 
-        {/* Title */}
-        <h1
-          className="
-            text-xl sm:text-2xl md:text-3xl font-extrabold
-            bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-400
-            bg-clip-text text-transparent
-            drop-shadow-md animate-textGradient
-          "
-        >
-          AI Spiritual Guru
-        </h1>
+        {/* Title + Tagline */}
+        <div className="flex flex-col leading-tight">
+          <h1
+            className="
+              text-2xl sm:text-3xl md:text-4xl font-extrabold
+              bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-400
+              bg-clip-text text-transparent
+              drop-shadow-md animate-textGradient
+            "
+          >
+            MindsetU
+          </h1>
+          <span className="text-sm sm:text-base text-yellow-200/80 font-semibold">
+            AI Spiritual Guru
+          </span>
+        </div>
       </div>
 
       {/* RIGHT — AUTH BUTTONS */}

@@ -1,14 +1,8 @@
 @import "tailwindcss";
 
-
-
-/* Base Colors and Fonts */
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --gradient-start: #ffcc00;
-  --gradient-middle: #ff77ff;
-  --gradient-end: #7700ff;
 }
 
 body {
@@ -18,285 +12,90 @@ body {
   overflow-x: hidden;
 }
 
-/* Shimmer text */
 .shimmer-gold {
-  background-size: 200% auto;
+  background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  animation: shimmer 5s linear infinite;
-}
-
-/* Floating mystical particles */
-.particle-mask {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 2px, transparent 2px);
-  background-size: 50px 50px;
-  animation: orbFloat 15s linear infinite;
-  opacity: 0.2;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-/* Buttons glow effect */
-.glowPulse {
-  animation: glowPulse 4s ease-in-out infinite alternate;
-}
-
-/* Floating elements */
-.animate-float {
-  animation: floatSlow 4s ease-in-out infinite;
-}
-
-.animate-orbFloat {
-  animation: orbFloat 8s ease-in-out infinite;
-}
-.animate-orbFloat2 {
-  animation: orbFloat2 10s ease-in-out infinite;
-}
-
-/* Text glow */
-.animate-textGlowSlow {
-  animation: textGlowSlow 3s ease-in-out infinite;
-}
-
-/* Fade-in animation */
-.animate-fadeInSlow {
-  animation: fadeInSlow 0.8s ease-out forwards;
-}
-
-/* Pulse effect for cards */
-.animate-pulseSlow {
-  animation: pulseSlow 6s ease-in-out infinite;
-}
-
-/* Glassmorphism overlay */
-.backdrop-blur-md {
-  backdrop-filter: blur(12px);
-}
-
-/* Scrollbar hidden */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* Floating & Pulse */
-@keyframes pulseSlow {
-  0%,100% { transform: scale(1); opacity: 0.2; }
-  50% { transform: scale(1.05); opacity: 0.35; }
-}
-.animate-pulseSlow { animation: pulseSlow 6s ease-in-out infinite; }
-
-/* Floating dust particles */
-@keyframes floatDust {
-  0% { transform: translate3d(0,0,0); }
-  100% { transform: translate3d(-100px,-100px,0); }
-}
-.animate-floatDust { animation: floatDust 15s linear infinite; }
-
-/* Glow text shimmer */
-@keyframes textGlowSlow {
-  0%,100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff9; }
-  50% { text-shadow: 0 0 20px #fff, 0 0 40px #ff9; }
-}
-.animate-textGlowSlow { animation: textGlowSlow 4s ease-in-out infinite; }
-
-/* Mandala rotation & scale */
-@keyframes rotateMandala { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.animate-rotate-mandala { animation: rotateMandala 60s linear infinite; }
-@keyframes scaleMandala { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.05); } }
-.animate-scale-mandala { animation: scaleMandala 20s ease-in-out infinite; }
-
-/* Button pulse aura */
-@keyframes pulseAura { 0%,100%{ transform: scale(0.95); opacity: 0.2; } 50%{ transform: scale(1.05); opacity: 0.35; } }
-.animate-pulseAura { animation: pulseAura 3s ease-in-out infinite; }
-
-/* Floating & Pulse */
-@keyframes pulseSlow {
-  0%,100% { transform: scale(1); opacity: 0.2; }
-  50% { transform: scale(1.05); opacity: 0.35; }
-}
-.animate-pulseSlow { animation: pulseSlow 6s ease-in-out infinite; }
-
-/* Floating dust particles */
-@keyframes floatDust {
-  0% { transform: translate3d(0,0,0); }
-  100% { transform: translate3d(-100px,-100px,0); }
-}
-.animate-floatDust { animation: floatDust 15s linear infinite; }
-
-/* Glow text shimmer */
-@keyframes textGlowSlow {
-  0%,100% { text-shadow: 0 0 10px #fff, 0 0 20px #ff9; }
-  50% { text-shadow: 0 0 20px #fff, 0 0 40px #ff9; }
-}
-.animate-textGlowSlow { animation: textGlowSlow 4s ease-in-out infinite; }
-
-/* Button pulse aura */
-@keyframes pulseAura {
-  0%,100%{ transform: scale(0.95); opacity: 0.2; }
-  50%{ transform: scale(1.05); opacity: 0.35; }
-}
-.animate-pulseAura { animation: pulseAura 3s ease-in-out infinite; }
-
-/* Shimmer gold */
-@keyframes shimmerGold {
-  0%,100% { filter: drop-shadow(0 0 6px rgba(255,220,150,0.4)); }
-  50% { filter: drop-shadow(0 0 15px rgba(255,220,150,0.7)); }
-}
-.shimmer-gold { animation: shimmerGold 5s ease-in-out infinite; }
-
-/* Glow text shimmer */
-@keyframes shimmerGold { 0%,100%{ filter: drop-shadow(0 0 6px rgba(255,220,150,0.4)); } 50%{ filter: drop-shadow(0 0 15px rgba(255,220,150,0.7)); } }
-.shimmer-gold { animation: shimmerGold 5s ease-in-out infinite; }
-
-@keyframes pulseAura { 0%,100%{ transform: scale(0.95); opacity:0.2; } 50%{ transform: scale(1.05); opacity:0.35; } }
-.animate-pulseAura { animation: pulseAura 3s ease-in-out infinite; }
-
-@keyframes fadeUp { 0%{ opacity:0; transform:translateY(20px);} 100%{ opacity:1; transform:translateY(0);} }
-.animate-fadeUp { animation: fadeUp 0.8s ease forwards; }
-
-@keyframes floatDust { 0%{transform:translate3d(0,0,0);} 100%{transform:translate3d(-100px,-100px,0);} }
-.particle-mask { background-image: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px); background-size:50px 50px; animation: floatDust 15s linear infinite; }
-
-@keyframes textGlowSlow { 0%,100%{ text-shadow:0 0 10px #fff,0 0 20px #ff9;} 50%{ text-shadow:0 0 20px #fff,0 0 40px #ff9;} }
-.animate-textGlowSlow { animation: textGlowSlow 4s ease-in-out infinite; }
-
-@keyframes pulseSlow { 0%,100%{ transform:scale(1); opacity:0.2;} 50%{ transform:scale(1.05); opacity:0.35;} }
-.animate-pulseSlow { animation: pulseSlow 6s ease-in-out infinite; }
-
-@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-.animate-fadeIn { animation: fadeIn 0.8s ease-out forwards; }
-
-@keyframes slowFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
-
-.animate-slowFloat {
-  animation: slowFloat 6s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.05); }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
-}
-
-/* Optional shimmer gradient */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer-gold {
-  background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
 }
 
-@keyframes slowFloat {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-.animate-slowFloat { animation: slowFloat 10s ease-in-out infinite alternate; }
-
-@keyframes rotateMandala {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.rotate-mandala { animation: rotateMandala 60s linear infinite; }
-@keyframes slowFloat {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-.animate-slowFloat { animation: slowFloat 12s ease-in-out infinite alternate; }
-
-@keyframes rotateMandala {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.animate-rotateMandala { animation: rotateMandala 60s linear infinite; }
-
-/* Particle mask */
-.particle-mask {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px);
-  background-size: 50px 50px;
-  animation: floatDust 15s linear infinite;
-  opacity: 0.2;
-}
-@keyframes floatDust {
-  0% { transform: translate3d(0,0,0); }
-  100% { transform: translate3d(-100px,-100px,0); }
-}
-
-/* Shimmer text */
-.shimmer-gold {
-  background-size: 200% 100%;
-  animation: shimmer 5s linear infinite;
-}
 @keyframes shimmer {
-  0%,100% { background-position: -200% 0; }
-  50% { background-position: 200% 0; }
-}
-
-/* Gradient glow text */
-.animate-textGlow {
-  animation: textGlow 3s ease-in-out infinite alternate;
-}
-@keyframes textGlow {
-  0%,100% { text-shadow: 0 0 12px rgba(255,215,0,.4); }
-  50% { text-shadow: 0 0 20px rgba(255,215,0,.8); }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 0.8; transform: scale(1.2); }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow infinite ease-in-out;
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes slowFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .animate-slowFloat {
-  animation: slowFloat infinite ease-in-out;
+  animation: slowFloat 8s ease-in-out infinite;
 }
 
- @keyframes diagonalFloat {
-    0% {
-      transform: translate(0px, 0px);
-    }
-    50% {
-      transform: translate(calc(20px * var(--xDir)), calc(20px * var(--yDir)));
-    }
-    100% {
-      transform: translate(0px, 0px);
-    }
+.card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .animated-bg {
-    background: linear-gradient(135deg, #111322, #0e0f1a, #111322, #0e0f1a);
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
+  background: linear-gradient(135deg, #111322, #0e0f1a, #111322, #0e0f1a);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
   }
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%;
   }
-  @keyframes floatParticle {
-    0% { transform: translateY(0px) translateX(0px); }
-    50% { transform: translateY(-25px) translateX(12px); }
-    100% { transform: translateY(0px) translateX(0px); }
+  100% {
+    background-position: 0% 50%;
   }
-  @keyframes pulseOpacity {
-    0% { opacity: 0.2; }
-    50% { opacity: 0.5; }
-    100% { opacity: 0.2; }
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-25px) translateX(12px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes pulseOpacity {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
