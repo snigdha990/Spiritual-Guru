@@ -10,15 +10,14 @@ export default function Header() {
         w-full sticky top-0 z-50
         flex items-center justify-between
         px-4 sm:px-8 py-4
-        bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/50 to-[#1a1a2e]/80
+        bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a1f]/60 to-[#1a1a2e]/90
         backdrop-blur-xl
         border-b border-white/10
         shadow-[0_8px_30px_rgba(0,0,0,0.25)]
       "
     >
       {/* LEFT — LOGO + TITLE */}
-      <div className="flex items-center gap-4">
-        {/* Animated Logo */}
+      <div className="flex items-center gap-6">
         <img
           src="/mindsetu.svg"
           alt="MindsetU Logo"
@@ -29,8 +28,6 @@ export default function Header() {
             animate-float
           "
         />
-
-        {/* Title + Tagline */}
         <div className="flex flex-col leading-tight">
           <h1
             className="
@@ -59,7 +56,7 @@ export default function Header() {
                 bg-gradient-to-r from-yellow-300 to-yellow-500
                 shadow-lg shadow-yellow-400/30
                 hover:scale-105 active:scale-95
-                transition-all duration-300 
+                transition-all duration-300
               "
             >
               Sign In
